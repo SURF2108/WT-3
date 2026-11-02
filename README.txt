@@ -28,4 +28,5 @@ GitHub Pages without server-side route configuration.
 Features:
 - Home page and food menu
 - Add food to cart, adjust quantities, and remove items
-- Checkout form and order confirmation
+- Checkout validation for name, delivery address, and Indian mobile number
+- Inline validation errors and an order confirmation message

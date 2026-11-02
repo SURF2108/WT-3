@@ -67,7 +67,8 @@ button:hover {
 }
 
 form {
-  width: 400px;
+  width: 100%;
+  max-width: 500px;
 }
 
 form label {
@@ -83,12 +84,44 @@ form textarea {
   box-sizing: border-box;
 }
 
+form input[aria-invalid="true"],
+form textarea[aria-invalid="true"] {
+  border: 1px solid #b42318;
+}
+
 form textarea {
   height: 80px;
 }
 
 form button {
   margin-top: 15px;
+}
+
+.form-error,
+.form-error-summary {
+  color: #b42318;
+}
+
+.form-error {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+}
+
+.form-error-summary {
+  padding: 10px;
+  border: 1px solid #b42318;
+  background: #fff4f2;
+}
+
+.form-success {
+  padding: 14px;
+  border: 1px solid #16803c;
+  background: #effaf2;
+  color: #12632f;
+}
+
+.checkout-total {
+  font-weight: 700;
 }
 
 @media (max-width: 600px) {
