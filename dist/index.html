@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Food Ordering</title>
+    <link rel="stylesheet" crossorigin href="/assets/index-tS-zJxzQ.css">
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-router-dom@6.28.0/umd/react-router-dom.development.js"></script>
+
+    <script>
+      const { useState } = React;
+      const { HashRouter, Routes, Route, Link, useNavigate } = ReactRouterDOM;
+
+      const foods = [
+        { id: 1, name: 'Pizza', category: 'Pizza', price: 200 },
+        { id: 2, name: 'Burger', category: 'Burger', price: 120 },
+        { id: 3, name: 'Veg Biryani', category: 'Indian', price: 180 },
+        { id: 4, name: 'Masala Dosa', category: 'Indian', price: 100 },
+        { id: 5, name: 'Fried Rice', category: 'Chinese', price: 150 },
+        { id: 6, name: 'Noodles', category: 'Chinese', price: 140 }
+      ];
+
+      function Food({ food, addToCart }) {
+        return React.createElement(
+          'div',
+          { className: 'food' },
+          React.createElement('h3', null, food.name),
+          React.createElement('p', null, 'Category: ', food.category),
+          React.createElement('p', null, 'Price: ₹', food.price),
+          React.createElement(
+            'button',
+            { onClick: () => addToCart(food) },
+            'Add to Cart'
+          )
+        );
+      }
+
+      function Navbar({ cartCount }) {
+        return React.createElement(
+          'div',
+          { className: 'navbar' },
+          React.createElement('h2', null, 'Online Food Ordering'),
+          React.createElement(
+            'div',
+            null,
+            React.createElement(Link, { to: '/' }, 'Home'),
+            React.createElement(Link, { to: '/menu' }, 'Menu'),
+            React.createElement(Link, { to: '/cart' }, 'Cart (', cartCount, ')')
+          )
+        );
+      }
+
+      function Home() {
+        return React.createElement(
+          'div',
+          { className: 'page' },
+          React.createElement('h1', null, 'Welcome to Online Food Ordering System'),
+          React.createElement('p', null, 'Order your favourite food online.'),
+          React.createElement('h3', null, 'Food Categories'),
+          React.createElement(
+            'ul',
+            null,
+            React.createElement('li', null, 'Pizza'),
+            React.createElement('li', null, 'Burgers'),
+            React.createElement('li', null, 'Indian Food'),
+            React.createElement('li', null, 'Chinese Food')
+          ),
+          React.createElement(
+            Link,
+            { to: '/menu' },
+            React.createElement('button', null, 'View Menu')
+          )
+        );
+      }
+
+      function Menu({ addToCart }) {
+        return React.createElement(
+          'div',
+          { className: 'page' },
+          React.createElement('h1', null, 'Menu'),
+          React.createElement(
+            'div',
+            { className: 'food-list' },
+            foods.map((food) =>
+              React.createElement(Food, {
+                key: food.id,
+                food,
+                addToCart
+              })
+            )
+          )
+        );
+      }
+
+      function Cart({ cart, removeFromCart, changeQuantity }) {
+        const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+        if (cart.length === 0) {
+          return React.createElement(
+            'div',
+            { className: 'page' },
+            React.createElement('h1', null, 'Cart'),
+            React.createElement('p', null, 'Your cart is empty.'),
+            React.createElement(Link, { to: '/menu' }, 'Go to Menu')
+          );
+        }
+
+        return React.createElement(
+          'div',
+          { className: 'page' },
+          React.createElement('h1', null, 'Cart'),
+          cart.map((item) =>
+            React.createElement(
+              'div',
+              { className: 'cart-item', key: item.id },
+              React.createElement('span', null, item.name, ' - ₹', item.price),
+              React.createElement(
+                'span',
+                null,
+                React.createElement('button', { onClick: () => changeQuantity(item.id, -1) }, '-'),
+                ' ',
+                item.quantity,
+                ' ',
+                React.createElement('button', { onClick: () => changeQuantity(item.id, 1) }, '+')
+              ),
+              React.createElement('button', { onClick: () => removeFromCart(item.id) }, 'Remove')
+            )
+          ),
+          React.createElement('h3', null, 'Total: ₹', total),
+          React.createElement(
+            Link,
+            { to: '/checkout' },
+            React.createElement('button', null, 'Checkout')
+          )
+        );
+      }
+
+      function Checkout({ cart, setCart }) {
+        const navigate = useNavigate();
+        const [name, setName] = useState('');
+        const [address, setAddress] = useState('');
+        const [phone, setPhone] = useState('');
+
+        const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+        const placeOrder = (event) => {
+          event.preventDefault();
+
+          if (cart.length === 0) {
+            alert('Cart is empty');
+            return;
+          }
+
+          alert('Order placed successfully!');
+          setCart([]);
+          navigate('/');
+        };
+
+        return React.createElement(
+          'div',
+          { className: 'page' },
+          React.createElement('h1', null, 'Checkout'),
+          React.createElement(
+            'form',
+            { onSubmit: placeOrder },
+            React.createElement('label', null, 'Name'),
+            React.createElement('input', {
+              type: 'text',
+              value: name,
+              onChange: (event) => setName(event.target.value),
+              required: true
+            }),
+            React.createElement('label', null, 'Address'),
+            React.createElement('textarea', {
+              value: address,
+              onChange: (event) => setAddress(event.target.value),
+              required: true
+            }),
+            React.createElement('label', null, 'Phone'),
+            React.createElement('input', {
+              type: 'text',
+              value: phone,
+              onChange: (event) => setPhone(event.target.value),
+              required: true
+            }),
+            React.createElement('p', null, 'Total Amount: ₹', total),
+            React.createElement('button', { type: 'submit' }, 'Place Order')
+          )
+        );
+      }
+
+      function App() {
+        const [cart, setCart] = useState([]);
+
+        const addToCart = (food) => {
+          const item = cart.find((x) => x.id === food.id);
+
+          if (item) {
+            setCart(cart.map((x) => (x.id === food.id ? { ...x, quantity: x.quantity + 1 } : x)));
+          } else {
+            setCart([...cart, { ...food, quantity: 1 }]);
+          }
+        };
+
+        const removeFromCart = (id) => {
+          setCart(cart.filter((x) => x.id !== id));
+        };
+
+        const changeQuantity = (id, change) => {
+          setCart(
+            cart
+              .map((x) => (x.id === id ? { ...x, quantity: x.quantity + change } : x))
+              .filter((x) => x.quantity > 0)
+          );
+        };
+
+        return React.createElement(
+          React.Fragment,
+          null,
+          React.createElement(Navbar, {
+            cartCount: cart.reduce((total, item) => total + item.quantity, 0)
+          }),
+          React.createElement(
+            Routes,
+            null,
+            React.createElement(Route, {
+              path: '/',
+              element: React.createElement(Home, { addToCart })
+            }),
+            React.createElement(Route, {
+              path: '/menu',
+              element: React.createElement(Menu, { addToCart })
+            }),
+            React.createElement(Route, {
+              path: '/cart',
+              element: React.createElement(Cart, {
+                cart,
+                removeFromCart,
+                changeQuantity
+              })
+            }),
+            React.createElement(Route, {
+              path: '/checkout',
+              element: React.createElement(Checkout, { cart, setCart })
+            })
+          )
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(HashRouter, null, React.createElement(App)));
+    </script>
+  </body>
+</html>
