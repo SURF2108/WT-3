@@ -2,28 +2,30 @@ ONLINE FOOD ORDERING SYSTEM
 ============================
 
 Technology:
-- React JS
+- React
 - React Router
 - CSS
 - Vite
 
-How to run:
+Run locally:
 
-1. Open this project folder in VS Code.
-2. Open the terminal.
-3. Run:
-   npm install
-4. Run:
-   npm run dev
-5. Open the localhost URL shown in the terminal.
+1. Run `npm install`.
+2. Run `npm run dev`.
+3. Open the localhost URL shown in the terminal.
+
+Build for production with `npm run build`. The generated site is in `dist`.
+
+GitHub Pages deployment:
+
+1. Push changes to the `main` branch.
+2. In the repository settings, open Pages and set the source to GitHub Actions.
+3. The workflow builds and deploys the site. Its URL is
+   `https://surf2108.github.io/WT-3/`.
+
+The app uses hash-based routes so menu, cart, and checkout navigation works on
+GitHub Pages without server-side route configuration.
 
 Features:
-- Home page
-- Food menu
-- Add food to cart
-- Increase/decrease quantity
-- Remove items
-- Checkout form
-- Place order
-
-This is a simple frontend lab assignment.
+- Home page and food menu
+- Add food to cart, adjust quantities, and remove items
+- Checkout form and order confirmation

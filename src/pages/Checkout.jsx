@@ -48,7 +48,11 @@ function Checkout({ cart, setCart }) {
 
         <label>Phone</label>
         <input
-          type="text"
+          type="tel"
+          inputMode="tel"
+          pattern="\+?[0-9]{7,15}"
+          maxLength={16}
+          title="Enter 7 to 15 digits, optionally preceded by +."
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           required
